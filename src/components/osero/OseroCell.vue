@@ -1,19 +1,40 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref , onMounted,} from 'vue';
 import { defineProps } from 'vue';
-import { Cell } from '@/models/osero';
-const stoneColor=ref<string>("");
-// const installation =()=>{
-//     stoneColor.value=("stone-black")
-// }
+import { Cell } from '@/models/osero'
+
 const props = defineProps<{
     cell: Cell;
 }>();
+const cell = ref(props.cell)
+const cellState = ref('')
+// console.log(props.cell.cellState)
+
+// const installation =()=>{
+//     stoneColor.value=("stone-black")
+// }
+
+// コマの色の指定
+const updateCellState =()=>{
+    console.log(cell.value)
+    if (cell.value.cellState === 'white') {
+        return 'stone-white';
+    } else if (cell.value.cellState === 'black') {
+        return 'stone-black';
+    } else {
+        return 'none';
+    }
+}
+onMounted(()=>{
+    cellState.value=updateCellState()
+}) 
+
+
 </script>
 <template>
     <div class="cell-wrapper">
-        <div class="cell"></div>
-        <div class="stone" :class="stoneColor"></div>
+        <div class="cell" @click="cell.putCell"></div>
+        <div class="stone" :class="cellState"></div>
     </div>
 </template>
 
@@ -40,5 +61,8 @@ const props = defineProps<{
 }
 .stone-black{
     background-color: #000;
+}
+.none{
+    background-color: aqua;
 }
 </style>

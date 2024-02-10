@@ -3,6 +3,12 @@ export class Board{
 
     constructor(){
         this.rows = [...Array(8).keys()].map(i=> new Row(i))
+        //初期設定
+        this.rows[3].cells[3].state = CellState.White;
+        this.rows[3].cells[4].state = CellState.Black;
+        this.rows[4].cells[3].state = CellState.Black;
+        this.rows[4].cells[4].state = CellState.White;
+
         console.log(this.rows)
     }
     private putBlack:string = "black"
@@ -29,6 +35,12 @@ export class Cell{
     constructor(x:number,y:number){
         this.x = x
         this.y = y
+    }
+    public get cellState():CellState{
+        return this.state;
+    }
+    public putCell():void{
+        this.state=CellState.Black
     }
 }
 // class Point{

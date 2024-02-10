@@ -1,10 +1,20 @@
 <script setup lang="ts">
+import { defineProps } from 'vue';
 import OseroRow from './OseroRow.vue';
-import { Row } from '@/models/osero';
+import { Board } from '@/models/osero';
+
+const props = defineProps<{
+    board: Board;
+}>();
+
 </script>
 
 <template>
     <div class="d-flex">
-        <OseroRow v-for="(x,index) in 8" :key="index" :x="x" :row="new Row(x)"/>
+        <OseroRow v-for="(row,index) in props.board.rows" 
+            :key="index" 
+            :row="row"/>
+        <!-- <OseroRow v-for="(index) in 8" :key="index" :row="props.board.rows[index]"/> -->
     </div>
 </template>
+
