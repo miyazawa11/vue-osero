@@ -3,17 +3,20 @@ export class Board{
 
     constructor(){
         this.rows = [...Array(8).keys()].map(i=> new Row(i))
+        console.log(this.rows)
     }
     private putBlack:string = "black"
     private putWhite:string = "white"
     private putColor:string = this.putBlack
+    public change(){
+        return this.putColor=="black"? this.putWhite: this.putBlack;
+    }
     public put(){
-        rows[]
+        
     }
 }
 export class Row{
     public cells:Cell[];
-
     constructor(rowNumber:number){
         this.cells = [...Array(8).keys()].map(i => new Cell (i,rowNumber))
     }

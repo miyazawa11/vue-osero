@@ -1,21 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { Cell , Point} from '@/models/osero'
-new Point(x:number y:number){
-    
-}
-new Cell ()
-
+import { defineProps } from 'vue';
+import { Cell } from '@/models/osero';
 const stoneColor=ref<string>("");
-const installation =()=>{
-    stoneColor.value=("stone-black")
-}
-
-
-
+// const installation =()=>{
+//     stoneColor.value=("stone-black")
+// }
+const props = defineProps<{
+    cell: Cell;
+}>();
 </script>
 <template>
-    <div @click="installation()" class="cell-wrapper">
+    <div class="cell-wrapper">
         <div class="cell"></div>
         <div class="stone" :class="stoneColor"></div>
     </div>
