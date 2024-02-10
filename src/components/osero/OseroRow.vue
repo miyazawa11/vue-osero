@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { defineProps,defineEmits } from 'vue';
 import OseroCell from './OseroCell.vue';
 import { Row } from '@/models/osero';
 // import{Cell} from '@/models/osero'
@@ -8,12 +8,19 @@ import { Row } from '@/models/osero';
 const props = defineProps<{
     row: Row;
 }>();
+const emits = defineEmits<{
+    (e:"puttingStone",x:number,y:number):void
+}>()
+const puttingStone=(x:number,y:number)=>{
+    emits("puttingStone",x,y)
+}
 </script>
 
 <template>
     <div>
         <OseroCell v-for="(cell,index) in props.row.cells" 
             :key="index" 
-            :cell="cell"/>
+            :cell="cell"
+            @puttingStone="puttingStone"/>
     </div>
 </template>

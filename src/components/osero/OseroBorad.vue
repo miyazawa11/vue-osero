@@ -7,13 +7,17 @@ const props = defineProps<{
     board: Board;
 }>();
 
+const puttingStone=(x:number,y:number)=>{
+    props.board.put(x,y)
+}
 </script>
 
 <template>
     <div class="d-flex">
         <OseroRow v-for="(row,index) in props.board.rows" 
             :key="index" 
-            :row="row"/>
+            :row="row"
+            @puttingStone="puttingStone"/>
         <!-- <OseroRow v-for="(index) in 8" :key="index" :row="props.board.rows[index]"/> -->
     </div>
 </template>

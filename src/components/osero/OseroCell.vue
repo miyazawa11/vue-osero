@@ -1,22 +1,25 @@
 <script setup lang="ts">
 import { ref , onMounted,} from 'vue';
-import { defineProps } from 'vue';
+import { defineProps,defineEmits } from 'vue';
 import { Cell } from '@/models/osero'
 
+//props
 const props = defineProps<{
     cell: Cell;
 }>();
+
+//emits
+const emits = defineEmits<{
+    (e:"puttingStone",x:number,y:number):void
+}>();
+
+//宣言
 const cell = ref(props.cell)
 const cellState = ref('')
-// console.log(props.cell.cellState)
 
-// const installation =()=>{
-//     stoneColor.value=("stone-black")
-// }
-
+//関数
 // コマの色の指定
 const updateCellState =()=>{
-    console.log(cell.value)
     if (cell.value.cellState === 'white') {
         return 'stone-white';
     } else if (cell.value.cellState === 'black') {
@@ -25,6 +28,15 @@ const updateCellState =()=>{
         return 'none';
     }
 }
+
+
+const put = () =>{
+    if(cell.value.state=="none"){
+        emits("puttingStone",cell.value.x,cell.value.y)
+        cellState.value=updateCellState()
+    }
+}
+
 onMounted(()=>{
     cellState.value=updateCellState()
 }) 
@@ -33,8 +45,8 @@ onMounted(()=>{
 </script>
 <template>
     <div class="cell-wrapper">
-        <div class="cell" @click="cell.putCell"></div>
-        <div class="stone" :class="cellState"></div>
+        <div class="cell"></div>
+        <div class="stone" @click="put()" :class="cellState"></div>
     </div>
 </template>
 

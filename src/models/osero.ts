@@ -1,6 +1,7 @@
 export class Board{
     public rows:Row[];
-
+    public turnColor:CellState=CellState.Black;
+    
     constructor(){
         this.rows = [...Array(8).keys()].map(i=> new Row(i))
         //初期設定
@@ -14,12 +15,25 @@ export class Board{
     private putBlack:string = "black"
     private putWhite:string = "white"
     private putColor:string = this.putBlack
+
+    //色の変更（ひっくり返し）
     public change(){
         return this.putColor=="black"? this.putWhite: this.putBlack;
     }
-    public put(){
+    //石を置く
+    public put(x:number,y:number){
+        if(this.rows[y].cells[x].state!=="none") return
+        this.rows[y].cells[x].state=this.turnColor
+
+        if(this.turnColor=="black") {
+            this.turnColor=CellState.White
+        }
+        else if (this.turnColor=="white"){
+            this.turnColor=CellState.Black
+        }
         
     }
+    //
 }
 export class Row{
     public cells:Cell[];
