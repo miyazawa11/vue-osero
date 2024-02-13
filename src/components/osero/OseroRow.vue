@@ -8,7 +8,6 @@ import { Row } from '@/models/osero';
 const props = defineProps<{
     row: Row;
 }>();
-console.log("row")
 const emits = defineEmits<{
     (e:"puttingStone",x:number,y:number):void
 }>()

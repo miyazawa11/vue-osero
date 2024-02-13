@@ -33,7 +33,6 @@ const updateCellState =()=>{
 const put = () =>{
     if(cell.value.state=="none"){
         emits("puttingStone",cell.value.x,cell.value.y)
-        console.log("emits",cell.value.x,cell.value.y)
         cellState.value=updateCellState()
     }
 }
@@ -44,7 +43,6 @@ onMounted(()=>{
 
 watch(()=>props.cell.cellState, ()=>{
     cellState.value=updateCellState()
-    console.log(cell.value)
 })
 </script>
 <template>

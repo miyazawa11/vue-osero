@@ -7,12 +7,16 @@ const props = defineProps<{
     board: Board;
 }>();
 const board = ref(props.board)
-console.log("board",board.value.rows.values)
 const puttingStone=(x:number,y:number)=>{
-    board.value.put(x,y)
-    board.value.serarch(x,y)
+    const canTurn:[number,number][]=board.value.serarch(x,y)
+    console.log(canTurn)
+    if(canTurn.length!=0){
+        board.value.put(x,y)
+        board.value.change()
+        board.value.changeColor(canTurn,x,y)
+        }
+    }
 
-}
 </script>
 
 <template>
