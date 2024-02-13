@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref , onMounted,} from 'vue';
+import { ref , onMounted,watch} from 'vue';
 import { defineProps,defineEmits } from 'vue';
 import { Cell } from '@/models/osero'
 
@@ -33,6 +33,7 @@ const updateCellState =()=>{
 const put = () =>{
     if(cell.value.state=="none"){
         emits("puttingStone",cell.value.x,cell.value.y)
+        console.log("emits",cell.value.x,cell.value.y)
         cellState.value=updateCellState()
     }
 }
@@ -41,7 +42,10 @@ onMounted(()=>{
     cellState.value=updateCellState()
 }) 
 
-
+watch(()=>props.cell.cellState, ()=>{
+    cellState.value=updateCellState()
+    console.log(cell.value)
+})
 </script>
 <template>
     <div class="cell-wrapper">

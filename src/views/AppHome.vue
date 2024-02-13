@@ -5,7 +5,7 @@ import { Board } from '@/models/osero';
 
 <template>
     <div class="containar">
-        <div class=" d-flex justify-content-center align-items-center">
+        <div class="d-flex justify-content-center align-items-center flex-row">
             <OseroBorad :board="new Board()"/>
         </div>
     </div>

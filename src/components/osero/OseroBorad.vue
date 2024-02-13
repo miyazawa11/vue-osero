@@ -1,20 +1,23 @@
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { ref,defineProps } from 'vue';
 import OseroRow from './OseroRow.vue';
 import { Board } from '@/models/osero';
 
 const props = defineProps<{
     board: Board;
 }>();
-
+const board = ref(props.board)
+console.log("board",board.value.rows.values)
 const puttingStone=(x:number,y:number)=>{
-    props.board.put(x,y)
+    board.value.put(x,y)
+    board.value.serarch(x,y)
+
 }
 </script>
 
 <template>
-    <div class="d-flex">
-        <OseroRow v-for="(row,index) in props.board.rows" 
+    <div>
+        <OseroRow class="d-flex" v-for="(row,index) in board.rows" 
             :key="index" 
             :row="row"
             @puttingStone="puttingStone"/>
