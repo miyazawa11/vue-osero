@@ -6,6 +6,7 @@ import { Cell } from '@/models/osero'
 //props
 const props = defineProps<{
     cell: Cell;
+    canTurn:[number,number][]
 }>();
 
 //emits
@@ -16,6 +17,7 @@ const emits = defineEmits<{
 //宣言
 const cell = ref(props.cell)
 const cellState = ref('')
+const canPut=ref('')
 
 //関数
 // コマの色の指定
@@ -29,7 +31,18 @@ const updateCellState =()=>{
     }
 }
 
-
+//石を置ける位置を指定
+const canTurnArea=()=>{
+    for(let i=0;i<props.canTurn.length;i++){
+        // console.log("x,canTurn[i][1],y,canTurn[i][0]",cell.value.x,props.canTurn[i][1],cell.value.y,props.canTurn[i][0])
+        if((cell.value.x==props.canTurn[i][0])&&((cell.value.y==props.canTurn[i][1]))){
+            canPut.value='canTurnArea'
+        }
+        else{
+            canPut.value=''
+        }
+    }
+}
 const put = () =>{
     if(cell.value.state=="none"){
         emits("puttingStone",cell.value.x,cell.value.y)
@@ -44,10 +57,14 @@ onMounted(()=>{
 watch(()=>props.cell.cellState, ()=>{
     cellState.value=updateCellState()
 })
+
+watch(()=>props.canTurn, ()=>{
+    canTurnArea()
+})
 </script>
 <template>
     <div class="cell-wrapper">
-        <div class="cell"></div>
+        <div class="cell" :class="canPut"></div>
         <div class="stone" @click="put()" :class="cellState"></div>
     </div>
 </template>
@@ -69,6 +86,9 @@ watch(()=>props.cell.cellState, ()=>{
     width: 60px;
     height: 60px;
     border-radius: 50%;
+}
+.canTurnArea{
+    background-color: rgb(52, 255, 52);
 }
 .stone-white{
     background-color: white;

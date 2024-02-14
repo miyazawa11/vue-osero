@@ -7,6 +7,7 @@ import { Row } from '@/models/osero';
 // const row = new Row();
 const props = defineProps<{
     row: Row;
+    canTurn:[number,number][]
 }>();
 const emits = defineEmits<{
     (e:"puttingStone",x:number,y:number):void
@@ -21,6 +22,7 @@ const puttingStone=(x:number,y:number)=>{
         <OseroCell class="d-flex" v-for="(cell,index) in props.row.cells" 
             :key="index" 
             :cell="cell"
+            :canTurn="props.canTurn"
             @puttingStone="puttingStone"/>
     </div>
 </template>

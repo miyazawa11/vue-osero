@@ -28,6 +28,21 @@ export class Board{
         }
         console.log("")
     }
+    //個数判定
+    public get blackCount():number{
+        let count=0
+        this.rows.forEach(r => {
+            count+=r.blackCount
+        });
+        return count
+    }
+    public get whiteCount():number{
+        let count=0
+        this.rows.forEach(r => {
+            count +=r.whiteCount
+        });
+        return count
+    }
     //石を置く
     public put(x:number,y:number){
 
@@ -50,7 +65,7 @@ export class Board{
                 if(((j==0)&&(i==0))||(y+i>7)||(x+j>7)||(y+i<0)||(x+j<0)) continue
                 if(this.rows[y+i].cells[x+j].cellState==='none')continue
                 else if(this.rows[y+i].cells[x+j].cellState===this.turnColor)continue
-                //同じ色の意思が遠在するか
+                //同じ色の石が遠在するか
                 else {
                     // canTurn.push([i,j])
                     let count=1
@@ -71,49 +86,6 @@ export class Board{
         }
         console.log(resultSerarch)
         return resultSerarch
-        // console.log("canTurn",canTurn)
-        // // const result:[number,number][]=[];
-        // for(let i=0;i<canTurn.length;i++){
-        //     const finalStone:[number,number][]=[]
-        //     let count=1
-        //     // while((y+count*canTurn[i][0]<8)||(x+count*canTurn[i][1]<8)||(y+count*canTurn[i][0]>-1)||(x+count*canTurn[i][1]>-1)){
-        //     while((y+count*canTurn[i][0]<8)&&(y + count * canTurn[i][0] >= 0)&&(x + count * canTurn[i][1] < 8)&&(x + count * canTurn[i][1] >= 0)) {
-        //         console.log(x+count*canTurn[i][1],y+count*canTurn[i][0])
-
-        //         if(this.rows[y+count*canTurn[i][0]].cells[x+count*canTurn[i][1]].cellState==CellState.Black){
-        //             // console.log(this.rows[y+count*canTurn[i][0]].cells[count*canTurn[i][1]])
-        //             finalStone.push([count*canTurn[i][0],count*canTurn[i][1]])
-        //             break
-        //         }
-        //         count++
-        //     }
-        //     console.log("finalStone",finalStone)
-        //     for(let i=0;i<finalStone.length;i++){
-        //         let count=1
-        //         while(!(y+count*finalStone[i][0]/Math.abs(finalStone[i][0]) == finalStone[i][0])||!(x+count*finalStone[i][1]/Math.abs(finalStone[i][1]) == finalStone[i][1])){
-        //             count++
-        //             console.log(y+count*finalStone[i][0]/Math.abs(finalStone[i][0]),x+count*finalStone[i][1]/Math.abs(finalStone[i][1]))
-        //             this.rows[y+count*finalStone[i][0]/Math.abs(finalStone[i][0])].cells[x+count*finalStone[i][1]/Math.abs(finalStone[i][1])].state=CellState.Black
-        //             console.log(this.rows)
-        //         }
-        //     }
-
-            // for(let j=1;j<8;j++){
-            //     if((x+j>7)||(y+j)>7) continue
-            //     console.log(this.rows[y].cells[x].cellState+":"+this.rows[y+j*canTurn[i][0]].cells[x+j*canTurn[i][1]].cellState)
-            //     if(this.rows[y].cells[x].cellState
-            //         ===this.rows[y+j*canTurn[i][0]].cells[x+j*canTurn[i][1]].cellState){
-            //         finalStone.push([y+j*canTurn[i][0], x+j*canTurn[i][1]]);
-            //         console.log("finalStone")
-            //     }
-            // }
-            // for(let k=0;k<finalStone.length;k++){
-            //     let count=0
-            //     while((x==finalStone[k][0])||(y==finalStone[k][1])){
-            //         count++;
-            //         this.rows[y+count*canTurn[k][0]].cells[x+count*canTurn[k][1]].cellState=CellState.Black
-            //     }
-            // }
         }
     }
     //ひっくり返し
@@ -122,6 +94,20 @@ export class Row{
     public cells:Cell[];
     constructor(rowNumber:number){
         this.cells = [...Array(8).keys()].map(i => new Cell (i,rowNumber))
+    }
+    public get blackCount():number{
+        let count=0
+        this.cells.forEach(r => {
+            if(r.cellState==CellState.Black)count++
+        });
+        return count
+    }
+    public get whiteCount():number{
+        let count=0
+        this.cells.forEach(r => {
+            if(r.cellState==CellState.White)count++
+        });
+        return count
     }
 }
 export class Cell{
@@ -141,15 +127,6 @@ export class Cell{
     }
 }
 
-// class Point{
-//     public x:number;
-//     public y:number;
-
-//     constructor(x: number,y: number){
-//         this.x=x;
-//         this.y=y;
-//     }
-// }
 export enum CellState{
     White='white',
     Black='black',
