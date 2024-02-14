@@ -1,6 +1,3 @@
-// const max =(x:number,y:number)=>{
-//     return x>=y?x:y;
-// }
 export class Board{
     public rows:Row[];
     public turnColor:CellState=CellState.Black;
@@ -12,7 +9,6 @@ export class Board{
         this.rows[3].cells[4].state = CellState.Black;
         this.rows[4].cells[3].state = CellState.Black;
         this.rows[4].cells[4].state = CellState.White;
-
     }
 
     //色の変更（ひっくり返し）
@@ -84,12 +80,19 @@ export class Board{
                 }
             }
         }
-        console.log(resultSerarch)
-        return resultSerarch
-        }
+    console.log(resultSerarch)
+    return resultSerarch
     }
-    //ひっくり返し
-// }
+    public endCheck(): boolean {
+        for (const r of this.rows) {
+            if (r.endCheck()) {
+                return false; // 一つでも false があれば false を返す
+            }
+        }
+        return true; // すべての r.endCheck() が true の場合に true を返す
+    }
+}
+    
 export class Row{
     public cells:Cell[];
     constructor(rowNumber:number){
@@ -108,6 +111,12 @@ export class Row{
             if(r.cellState==CellState.White)count++
         });
         return count
+    }
+    public endCheck(){
+        this.cells.forEach(r=>{
+            if(r.cellState==CellState.None) return false
+        })
+        return true
     }
 }
 export class Cell{
