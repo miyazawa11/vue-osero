@@ -22,7 +22,6 @@ export class Board{
         else{
             console.log("失敗")
         }
-        console.log("")
     }
     //個数判定
     public get blackCount():number{
@@ -41,11 +40,11 @@ export class Board{
     }
     //石を置く
     public put(x:number,y:number){
-
         if(this.rows[y].cells[x].state!=="none") return
         this.rows[y].cells[x].state=this.turnColor
         
     }
+    //ひっくり返す
     public changeColor(canTurn:[number,number][],x:number,y:number){
         for(let i=0;i<canTurn.length;i++){
             this.rows[canTurn[i][0]].cells[canTurn[i][1]].state=this.rows[y].cells[x].state
@@ -53,23 +52,20 @@ export class Board{
     }
     //ひっくり返し判定
     public serarch(x:number,y:number):[number,number][]{
-        //縦横
         const resultSerarch: [number, number][] = [];
         //周りに違う色の石があるか
         for(let i=-1;i<2;i++){
             for(let j=-1;j<2;j++){
-                if(((j==0)&&(i==0))||(y+i>7)||(x+j>7)||(y+i<0)||(x+j<0)) continue
+                //範囲内かつ置く色と別の場合
+                if((y+i>7)||(x+j>7)||(y+i<0)||(x+j<0)) continue
                 if(this.rows[y+i].cells[x+j].cellState==='none')continue
                 else if(this.rows[y+i].cells[x+j].cellState===this.turnColor)continue
                 //同じ色の石が遠在するか
                 else {
-                    // canTurn.push([i,j])
                     let count=1
                     while((y+count*i<8)&&(y + count * i >= 0)&&(x + count * j < 8)&&(x + count * j >= 0)) {
                         if(this.rows[y+count*i].cells[x+count*j].cellState==this.turnColor){
-                            // console.log(this.rows[y+count*canTurn[i][0]].cells[count*canTurn[i][1]])
                             while(!(count == 0)){
-                                // this.rows[y+count*i].cells[x+count*j].state=this.rows[y].cells[x].state
                                 resultSerarch.push([y+count*i,x+count*j])
                                 count--;
                             }
@@ -82,6 +78,44 @@ export class Board{
         }
     console.log(resultSerarch)
     return resultSerarch
+    }
+    public searchCell():[number,number][]{
+        const resultSerarch: [number, number][] = [];
+
+        for(let x=0;x<8;x++){
+            for(let y=0;y<8;y++){
+                for(let i=-1;i<2;i++){
+                    for(let j=-1;j<2;j++){
+                        if(j==0&&i==0) continue
+                        
+
+                        //範囲内かつ置く色と別の場合
+                        if((y+i>7)||(x+j>7)||(y+i<0)||(x+j<0)) continue
+                        if(this.rows[y+i].cells[x+j].cellState==='none')continue
+                        if(this.rows[y].cells[x].cellState!=='none')continue
+                        else if(this.rows[y+i].cells[x+j].cellState===this.turnColor)continue
+                        //同じ色の石が遠在するか
+                        else {
+                            let count=1
+                            console.log(x,y,count,i,j)
+                            while((y+count*i<8)&&(y + count * i >= 0)&&(x + count * j < 8)&&(x + count * j >= 0)) {
+                                console.log("動く1")
+                                if(this.rows[y+count*i].cells[x+count*j].cellState==this.turnColor){
+                                    console.log("動く2")
+                                    resultSerarch.push([x,y])
+                                    console.log("動く3")
+                                    count=0
+                                    break
+                                }
+                                count++
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        return resultSerarch
     }
     public endCheck(): boolean {
         for (const r of this.rows) {

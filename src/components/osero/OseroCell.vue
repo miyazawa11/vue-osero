@@ -37,6 +37,7 @@ const canTurnArea=()=>{
         // console.log("x,canTurn[i][1],y,canTurn[i][0]",cell.value.x,props.canTurn[i][1],cell.value.y,props.canTurn[i][0])
         if((cell.value.x==props.canTurn[i][0])&&((cell.value.y==props.canTurn[i][1]))){
             canPut.value='canTurnArea'
+            return
         }
         else{
             canPut.value=''

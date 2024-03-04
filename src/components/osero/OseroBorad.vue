@@ -8,25 +8,28 @@ const props = defineProps<{
 }>();
 const board = ref(props.board)
 const canTurn = ref<[number, number][]>([]);
+const turn = ref<[number, number][]>([]);
 const whiteCount=ref<number>(0)
 const blackCount=ref<number>(0)
 // let end:boolean=false
 const end=ref<boolean>(false)
 const puttingStone=(x:number,y:number)=>{
-    canTurn.value=board.value.serarch(x,y)
-    console.log(canTurn.value)
-    console.log(canTurn)
-    if(canTurn.value.length!=0){
-        board.value.put(x,y)
-        board.value.change()
-        board.value.changeColor(canTurn.value,x,y)
+    turn.value=board.value.serarch(x,y)
+    console.log(turn.value)
+    console.log(turn)
+    if(turn.value.length!=0){
+        board.value.put(x,y) //石を置く
+        board.value.changeColor(turn.value,x,y)  //ひっくり返し
+        board.value.change()  //変更
     }
-    //下三つの書き方の違いが分からん
+    //それぞれの色の個数を把握
     whiteCount.value = board.value.whiteCount;
     blackCount.value = board.value.blackCount;
-    console.log(end.value)
+    //すべて埋まっているかcheck
     end.value=board.value.endCheck();
-    console.log("end.value",end.value)
+    canTurn.value=board.value.searchCell()
+    console.log("canTurn",canTurn.value)
+    // console.log("turn",turn.value)
 }
 
 onMounted(()=>{
