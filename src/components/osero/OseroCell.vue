@@ -98,6 +98,6 @@ watch(()=>props.canTurn, ()=>{
     background-color: #000;
 }
 .none{
-    background-color: aqua;
+    /* background-color: aqua; */
 }
 </style>

@@ -1,3 +1,14 @@
+export class easyCPU{
+    public putting(canTurn:[number,number][]){
+        const randomIndex = Math.floor(Math.random() * canTurn.length);
+        return canTurn[randomIndex]
+    }
+}
+export class hardCPU{
+    public putting(canTurn:[number,number][]){
+        
+    }
+}
 export class Board{
     public rows:Row[];
     public turnColor:CellState=CellState.Black;

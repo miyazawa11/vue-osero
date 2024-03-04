@@ -1,11 +1,16 @@
 <script setup lang="ts">
 import { ref,defineProps,onMounted } from 'vue';
+import { useRoute } from 'vue-router';
 import OseroRow from './OseroRow.vue';
 import { Board } from '@/models/osero';
-
+import {easyCPU} from '@/models/osero';
 const props = defineProps<{
     board: Board;
 }>();
+
+
+const route = useRoute()
+console.log(route,)
 const board = ref(props.board)
 const canTurn = ref<[number, number][]>([]);
 const turn = ref<[number, number][]>([]);
@@ -13,7 +18,28 @@ const whiteCount=ref<number>(0)
 const blackCount=ref<number>(0)
 // let end:boolean=false
 const end=ref<boolean>(false)
-const puttingStone=(x:number,y:number)=>{
+onMounted(()=>{
+    canTurn.value=board.value.searchCell()
+    whiteCount.value = board.value.whiteCount;
+    blackCount.value = board.value.blackCount;
+
+})
+// if(Object.values(route.query).some(value => value === 'easy')){
+    const CPU:easyCPU=new easyCPU()
+    console.log("CPU",CPU)
+// }
+// else if(Object.values(route.query).some(value => value === 'hard')){
+//     const CPU=new hardCPU()
+// }
+const afterPuttingStone=()=>{
+    //それぞれの色の個数を把握
+    whiteCount.value = board.value.whiteCount;
+    blackCount.value = board.value.blackCount;
+    //すべて埋まっているかcheck
+    end.value=board.value.endCheck();
+    canTurn.value=board.value.searchCell()
+}
+const put=(x:number,y:number)=>{
     turn.value=board.value.serarch(x,y)
     console.log(turn.value)
     console.log(turn)
@@ -22,20 +48,19 @@ const puttingStone=(x:number,y:number)=>{
         board.value.changeColor(turn.value,x,y)  //ひっくり返し
         board.value.change()  //変更
     }
-    //それぞれの色の個数を把握
-    whiteCount.value = board.value.whiteCount;
-    blackCount.value = board.value.blackCount;
-    //すべて埋まっているかcheck
-    end.value=board.value.endCheck();
+    afterPuttingStone()
+}
+const puttingStoneCPU=()=>{
     canTurn.value=board.value.searchCell()
-    console.log("canTurn",canTurn.value)
-    // console.log("turn",turn.value)
+    const puttingPlace:[number,number]=CPU.putting(canTurn.value)
+    put(puttingPlace[0],puttingPlace[1])
 }
 
-onMounted(()=>{
-    whiteCount.value = board.value.whiteCount;
-    blackCount.value = board.value.blackCount;
-})
+const puttingStone=(x:number,y:number)=>{
+    put(x,y)
+    setTimeout(()=>puttingStoneCPU(),1000);
+}
+
 </script>
 
 <template>
