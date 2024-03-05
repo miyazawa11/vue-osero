@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref,defineProps,onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import OseroRow from './OseroRow.vue';
 import { Board } from '@/models/osero';
 import {easyCPU} from '@/models/osero';
@@ -8,9 +7,6 @@ const props = defineProps<{
     board: Board;
 }>();
 
-
-const route = useRoute()
-console.log(route,)
 const board = ref(props.board)
 const canTurn = ref<[number, number][]>([]);
 const turn = ref<[number, number][]>([]);
@@ -37,12 +33,11 @@ const afterPuttingStone=()=>{
     blackCount.value = board.value.blackCount;
     //すべて埋まっているかcheck
     end.value=board.value.endCheck();
+    console.log(end.value)
     canTurn.value=board.value.searchCell()
 }
 const put=(x:number,y:number)=>{
     turn.value=board.value.serarch(x,y)
-    console.log(turn.value)
-    console.log(turn)
     if(turn.value.length!=0){
         board.value.put(x,y) //石を置く
         board.value.changeColor(turn.value,x,y)  //ひっくり返し
@@ -57,8 +52,11 @@ const puttingStoneCPU=()=>{
 }
 
 const puttingStone=(x:number,y:number)=>{
-    put(x,y)
-    setTimeout(()=>puttingStoneCPU(),1000);
+    // put(x,y)
+    // setTimeout(()=>puttingStoneCPU(),100);
+    for(let i=0;i<10;i++){
+        setTimeout(()=>puttingStoneCPU(),100);
+    }
 }
 
 </script>

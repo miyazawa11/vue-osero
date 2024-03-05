@@ -33,8 +33,10 @@ const updateCellState =()=>{
 
 //石を置ける位置を指定
 const canTurnArea=()=>{
+    if(props.canTurn.length==0){
+        canPut.value=''
+    }
     for(let i=0;i<props.canTurn.length;i++){
-        // console.log("x,canTurn[i][1],y,canTurn[i][0]",cell.value.x,props.canTurn[i][1],cell.value.y,props.canTurn[i][0])
         if((cell.value.x==props.canTurn[i][0])&&((cell.value.y==props.canTurn[i][1]))){
             canPut.value='canTurnArea'
             return

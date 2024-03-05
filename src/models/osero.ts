@@ -30,9 +30,6 @@ export class Board{
         else if (this.turnColor=="white"){
             this.turnColor=CellState.Black
         }
-        else{
-            console.log("失敗")
-        }
     }
     //個数判定
     public get blackCount():number{
@@ -87,7 +84,6 @@ export class Board{
                 }
             }
         }
-    console.log(resultSerarch)
     return resultSerarch
     }
     public searchCell():[number,number][]{
@@ -108,13 +104,9 @@ export class Board{
                         //同じ色の石が遠在するか
                         else {
                             let count=1
-                            console.log(x,y,count,i,j)
                             while((y+count*i<8)&&(y + count * i >= 0)&&(x + count * j < 8)&&(x + count * j >= 0)) {
-                                console.log("動く1")
                                 if(this.rows[y+count*i].cells[x+count*j].cellState==this.turnColor){
-                                    console.log("動く2")
                                     resultSerarch.push([x,y])
-                                    console.log("動く3")
                                     count=0
                                     break
                                 }
@@ -129,12 +121,7 @@ export class Board{
         return resultSerarch
     }
     public endCheck(): boolean {
-        for (const r of this.rows) {
-            if (r.endCheck()) {
-                return false; // 一つでも false があれば false を返す
-            }
-        }
-        return true; // すべての r.endCheck() が true の場合に true を返す
+        return this.rows.every(r => r.endCheck());
     }
 }
     
@@ -157,11 +144,9 @@ export class Row{
         });
         return count
     }
+    //一つもnoneがない=false、少なくとも一つはnoneがある=true
     public endCheck(){
-        this.cells.forEach(r=>{
-            if(r.cellState==CellState.None) return false
-        })
-        return true
+        return !this.cells.some(cell => cell.state == CellState.None);
     }
 }
 export class Cell{
